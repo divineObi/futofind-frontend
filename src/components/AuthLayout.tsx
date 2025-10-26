@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/Logo.png'; 
+import logo from '../assets/logo.png'; 
 import illustration from '../assets/amico.png';
 
 interface AuthLayoutProps {
