@@ -3,7 +3,7 @@ import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/logo.png';
 import { IconContext, type IconType } from 'react-icons';
-import { FiGrid, FiFileText, FiSearch, FiLogOut, FiMenu, FiX, FiBell, FiShield } from 'react-icons/fi';
+import { FiGrid, FiFileText, FiSearch, FiLogOut, FiMenu, FiBell, FiShield } from 'react-icons/fi';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, logout, notifications, unreadCount, markAsRead } = useAuth();
@@ -57,8 +57,8 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       <aside className={`fixed inset-y-0 left-0 bg-white shadow-md w-64 p-4 transform transition-transform duration-300 z-30 lg:hidden ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
           <div className="flex justify-between items-center mb-4">
             <img src={logo} alt="FutoFind" className="h-10 w-auto" />
-            <button onClick={() => setSidebarOpen(false)} className="text-gray-600 hover:text-gray-800">
-             <FiX size={24}/>
+            <button onClick={() => setSidebarOpen(false)} className="text-gray-600 hover:text-gray-800 p-2">
+             X
             </button>
           </div>
           <nav className="flex-grow">
