@@ -19,15 +19,11 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
 
-  // Handler for clicking the notification bell
+  // All handler functions remain the same
   const handleBellClick = () => {
     setNotificationOpen(prev => !prev);
-    if (!isNotificationOpen && unreadCount > 0) {
-      markAsRead();
-    }
+    if (!isNotificationOpen && unreadCount > 0) { markAsRead(); }
   };
-
-  // Handler to close notification dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
@@ -35,44 +31,27 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [notificationRef]);
-
-  // Handler for logging out the user
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
   
-  // The navigation array, now using simple strings for icon identifiers
-  let navItems: NavItem[] = [
+  // The navigation array, using simple strings for icon identifiers
+  const navItems: NavItem[] = [
     { name: 'Dashboard', path: '/dashboard', iconName: 'grid' },
     { name: 'My Reports', path: '/my-reports', iconName: 'file-text' },
     { name: 'Search Items', path: '/search', iconName: 'search' },
   ];
-
-  // Dynamically add the admin link if the user is an admin
   if (user && user.role === 'admin') {
       navItems.unshift({ name: 'Admin Panel', path: '/admin/claims', iconName: 'shield' });
   }
 
-  // Helper function to render the correct icon based on the string name
-  const renderNavIcon = (iconName: NavItem['iconName']) => {
-    switch (iconName) {
-      case 'grid': return <FiGrid />;
-      case 'file-text': return <FiFileText />;
-      case 'search': return <FiSearch />;
-      case 'shield': return <FiShield />;
-      default: return null;
-    }
-  };
-
   return (
     <div className="min-h-screen flex bg-gray-100">
       
-      {/* Mobile Sidebar */}
+      {/* --- Mobile Sidebar --- */}
       {isSidebarOpen && (<div className="fixed inset-0 bg-black opacity-50 z-20 lg:hidden" onClick={() => setSidebarOpen(false)}></div>)}
       <aside className={`fixed inset-y-0 left-0 bg-white shadow-md w-64 p-4 transform transition-transform duration-300 z-30 lg:hidden ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
           <div className="flex justify-between items-center mb-4">
@@ -80,30 +59,50 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             <button onClick={() => setSidebarOpen(false)} className="text-gray-600 hover:text-gray-800"><FiX size={24} /></button>
           </div>
           <nav className="flex-grow">
-              {navItems.map((item) => (
-                <NavLink key={item.name} to={item.path} onClick={() => setSidebarOpen(false)} className={({ isActive }) => `flex items-center p-3 my-2 rounded-lg transition-colors ${isActive ? 'bg-teal-500 text-white' : 'text-gray-600 hover:bg-gray-200'}`}>
-                    <IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}>
-                        {renderNavIcon(item.iconName)}
-                    </IconContext.Provider>
-                    {item.name}
-                </NavLink>
-              ))}
+              {navItems.map((item) => {
+                let iconComponent;
+                switch (item.iconName) {
+                    case 'grid': iconComponent = <FiGrid />; break;
+                    case 'file-text': iconComponent = <FiFileText />; break;
+                    case 'search': iconComponent = <FiSearch />; break;
+                    case 'shield': iconComponent = <FiShield />; break;
+                    default: iconComponent = null;
+                }
+                return (
+                    <NavLink key={item.name} to={item.path} onClick={() => setSidebarOpen(false)} className={({ isActive }) => `flex items-center p-3 my-2 rounded-lg transition-colors ${isActive ? 'bg-teal-500 text-white' : 'text-gray-600 hover:bg-gray-200'}`}>
+                        <IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}>
+                            {iconComponent}
+                        </IconContext.Provider>
+                        {item.name}
+                    </NavLink>
+                );
+              })}
           </nav>
       </aside>
       
-      {/* Desktop Sidebar */}
+      {/* --- Desktop Sidebar --- */}
       <aside className="hidden lg:flex lg:w-64 lg:flex-col bg-white shadow-md flex-shrink-0">
         <div className="p-4 border-b"><img src={logo} alt="FutoFind" className="h-12 w-auto" /></div>
         <div className="p-4"><h3 className="text-sm font-semibold text-gray-500 uppercase">Welcome</h3><p className="text-lg font-bold text-gray-800 truncate">{user?.name}</p></div>
         <nav className="flex-grow p-4">
-            {navItems.map((item) => (
-              <NavLink key={item.name} to={item.path} className={({ isActive }) => `flex items-center p-3 my-2 rounded-lg transition-colors ${isActive ? 'bg-teal-500 text-white' : 'text-gray-600 hover:bg-gray-200'}`}>
-                  <IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}>
-                      {renderNavIcon(item.iconName)}
-                  </IconContext.Provider>
-                  {item.name}
-              </NavLink>
-            ))}
+            {navItems.map((item) => {
+                let iconComponent;
+                switch (item.iconName) {
+                    case 'grid': iconComponent = <FiGrid />; break;
+                    case 'file-text': iconComponent = <FiFileText />; break;
+                    case 'search': iconComponent = <FiSearch />; break;
+                    case 'shield': iconComponent = <FiShield />; break;
+                    default: iconComponent = null;
+                }
+                return (
+                  <NavLink key={item.name} to={item.path} className={({ isActive }) => `flex items-center p-3 my-2 rounded-lg transition-colors ${isActive ? 'bg-teal-500 text-white' : 'text-gray-600 hover:bg-gray-200'}`}>
+                      <IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}>
+                          {iconComponent}
+                      </IconContext.Provider>
+                      {item.name}
+                  </NavLink>
+                );
+            })}
         </nav>
         <div className="p-4 border-t"><button onClick={handleLogout} className="w-full flex items-center p-3 text-red-500 hover:bg-red-100 rounded-lg transition-colors"><IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}><FiLogOut /></IconContext.Provider>Logout</button></div>
       </aside>
@@ -130,9 +129,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
                                           <p className="text-xs text-gray-400 mt-1">{new Date(n.createdAt).toLocaleString()}</p>
                                       </Link>
                                   ))
-                              ) : (
-                                  <p className="p-4 text-sm text-gray-500 text-center">You have no new notifications.</p>
-                              )}
+                              ) : ( <p className="p-4 text-sm text-gray-500 text-center">You have no new notifications.</p> )}
                           </div>
                           <div className="p-2 bg-gray-50 text-center">
                               <Link to="/my-reports" onClick={() => setNotificationOpen(false)} className="text-sm font-medium text-teal-600 hover:underline">View All Activity</Link>
