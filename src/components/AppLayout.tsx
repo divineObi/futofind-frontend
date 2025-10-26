@@ -2,8 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/Logo.png';
-import { IconContext } from 'react-icons';
+import { IconContext, type IconType } from 'react-icons';
 import { FiGrid, FiFileText, FiSearch, FiLogOut, FiMenu, FiX, FiBell, FiShield } from 'react-icons/fi';
+
+// --- 2. DEFINE A TYPE FOR OUR NAVIGATION ITEMS ---
+interface NavItem {
+    name: string;
+    path: string;
+    // Explicitly say the icon is a component of type IconType from react-icons
+    Icon: IconType; 
+}
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   // --- Get notification data from our upgraded context ---
@@ -44,26 +52,28 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     navigate('/login');
   };
 
-  let navItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: FiGrid },
-    { name: 'My Reports', path: '/my-reports', icon: FiFileText },
-    { name: 'Search Items', path: '/search', icon: FiSearch },
-  ];
+  let navItems: NavItem[] = [
+        { name: 'Dashboard', path: '/dashboard', Icon: FiGrid },
+        { name: 'My Reports', path: '/my-reports', Icon: FiFileText },
+        { name: 'Search Items', path: '/search', Icon: FiSearch },
+    ];
 
   if (user && user.role === 'admin') {
-      navItems.unshift({ name: 'Admin Panel', path: '/admin/claims', icon: FiShield });
+      navItems.unshift({ name: 'Admin Panel', path: '/admin/claims', Icon: FiShield });
   }
 
   const NavLinks = () => (
-    <>
-      {navItems.map((item) => (
-        <NavLink key={item.name} to={item.path} onClick={() => setSidebarOpen(false)} className={({ isActive }) => `flex items-center p-3 my-2 rounded-lg transition-colors ${isActive ? 'bg-teal-500 text-white' : 'text-gray-600 hover:bg-gray-200'}`}>
-          <IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}><item.icon /></IconContext.Provider>
-          {item.name}
-        </NavLink>
-      ))}
-    </>
-  );
+        <>
+            {navItems.map(({ path, name, Icon }) => ( // Destructure Icon here
+                <NavLink key={name} to={path} onClick={() => setSidebarOpen(false)} className={({ isActive }) => `...`}>
+                    <IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}>
+                        <Icon /> {/* Render the capitalized 'Icon' component */}
+                    </IconContext.Provider>
+                    {name}
+                </NavLink>
+            ))}
+        </>
+    );
 
   return (
     <div className="min-h-screen flex bg-gray-100">
