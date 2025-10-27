@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiX } from 'react-icons/fi';
-import { IconContext } from 'react-icons';
+import type { IconType, IconBaseProps } from 'react-icons';
 
 interface ModalProps {
   isOpen: boolean;
@@ -18,15 +18,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
       {/* The modal panel */}
       <div className="bg-white rounded-lg shadow-xl w-full max-w-lg relative animate-fade-in-down">
         {/* Modal Header */}
-        <div className="flex items-start justify-between p-5 border-b rounded-t">
+          <div className="flex items-start justify-between p-5 border-b rounded-t">
           <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
           <button
             onClick={onClose}
             className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
           >
-            <IconContext.Provider value={{className: 'w-5 h-5'}}>
-              <FiX />
-            </IconContext.Provider>  {/* <--- THIS IS THE CORRECTED LINE */}
+            <div className="w-5 h-5">{React.createElement(FiX as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}</div>
             <span className="sr-only">Close modal</span>
           </button>
         </div>

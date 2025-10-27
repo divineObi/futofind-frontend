@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiMapPin, FiCalendar } from 'react-icons/fi';
-import { IconContext } from 'react-icons';
+import type { IconType, IconBaseProps } from 'react-icons';
 import placeholderImage from '../assets/placeholder.png'; // A fallback image
 
 // Define the shape of the item data this card will receive
@@ -41,15 +41,11 @@ const ItemCard: React.FC<{ item: Item }> = ({ item }) => {
         
         <div className="mt-2 space-y-2 text-sm text-gray-600 flex-grow">
           <div className="flex items-center">
-            <IconContext.Provider value={{className: 'h-4 w-4 mr-2 text-gray-500'}}>
-                <FiMapPin />
-            </IconContext.Provider>
+            <div className="h-4 w-4 mr-2 text-gray-500">{React.createElement(FiMapPin as IconType as React.ComponentType<IconBaseProps>, { size: 14 })}</div>
             <span className="truncate">Found at: {item.location}</span>
           </div>
           <div className="flex items-center">
-             <IconContext.Provider value={{className: 'h-4 w-4 mr-2 text-gray-500'}}>
-                <FiCalendar />
-            </IconContext.Provider>
+             <div className="h-4 w-4 mr-2 text-gray-500">{React.createElement(FiCalendar as IconType as React.ComponentType<IconBaseProps>, { size: 14 })}</div>
             <span>Found on: {formattedDate}</span>
           </div>
         </div>

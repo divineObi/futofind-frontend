@@ -1,8 +1,9 @@
+import React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react'; // <-- Make sure these are imported
 import AppLayout from '../components/AppLayout';
 import { useAuth } from '../context/AuthContext';
-import { IconContext } from 'react-icons';
+import type { IconType, IconBaseProps } from 'react-icons';
 import { FiPlusSquare, FiEdit, FiSearch } from 'react-icons/fi';
 
 const DashboardPage = () => {
@@ -44,27 +45,21 @@ const DashboardPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 {/* Card 1: Report a Lost Item */}
                 <Link to="/report-item?type=lost" className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 text-center">
-                    <IconContext.Provider value={{ className: "h-12 w-12 mx-auto text-red-500" }}>
-                        <FiEdit />
-                    </IconContext.Provider>
+                    <div className="h-12 w-12 mx-auto text-red-500">{React.createElement(FiEdit as IconType as React.ComponentType<IconBaseProps>, { size: 48 })}</div>
                     <h2 className="mt-4 text-xl font-semibold text-gray-800">Report a Lost Item</h2>
                     <p className="mt-1 text-sm text-gray-500">Create a detailed report for an item you have lost.</p>
                 </Link>
 
                 {/* Card 2: Report a Found Item */}
                  <Link to="/report-item?type=found" className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 text-center">
-                    <IconContext.Provider value={{ className: "h-12 w-12 mx-auto text-green-500" }}>
-                        <FiPlusSquare />
-                    </IconContext.Provider>
+                    <div className="h-12 w-12 mx-auto text-green-500">{React.createElement(FiPlusSquare as IconType as React.ComponentType<IconBaseProps>, { size: 48 })}</div>
                     <h2 className="mt-4 text-xl font-semibold text-gray-800">Report a Found Item</h2>
                     <p className="mt-1 text-sm text-gray-500">Found an item? Report it here to help its owner.</p>
                 </Link>
 
                 {/* Card 3: Search Found Items */}
                 <Link to="/search" className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 text-center">
-                    <IconContext.Provider value={{ className: "h-12 w-12 mx-auto text-blue-500" }}>
-                        <FiSearch />
-                    </IconContext.Provider>
+                    <div className="h-12 w-12 mx-auto text-blue-500">{React.createElement(FiSearch as IconType as React.ComponentType<IconBaseProps>, { size: 48 })}</div>
                     <h2 className="mt-4 text-xl font-semibold text-gray-800">Search Found Items</h2>
                     <p className="mt-1 text-sm text-gray-500">Browse through items that have been found on campus.</p>
                 </Link>

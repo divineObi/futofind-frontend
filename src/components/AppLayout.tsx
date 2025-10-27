@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/logo.png';
-import { IconContext } from 'react-icons';
+
 import { FiGrid, FiFileText, FiSearch, FiLogOut, FiMenu, FiX, FiBell, FiShield } from 'react-icons/fi';
+import type { IconType, IconBaseProps } from 'react-icons';
+
 
 // The interface remains the same, using a string for the icon
 interface NavItem {
@@ -56,18 +58,21 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       <aside className={`fixed inset-y-0 left-0 bg-white shadow-md w-64 p-4 transform transition-transform duration-300 z-30 lg:hidden ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
           <div className="flex justify-between items-center mb-4">
             <img src={logo} alt="FutoFind" className="h-10 w-auto" />
-            <button onClick={() => setSidebarOpen(false)} className="text-gray-600 hover:text-gray-800"><FiX size={24} /></button>
+            <button onClick={() => setSidebarOpen(false)} className="text-gray-600 hover:text-gray-800">
+             <div className="h-6 w-6">
+                {React.createElement(FiX as IconType as React.ComponentType<IconBaseProps>, { size: 24 })}
+              </div>
+            </button>
           </div>
           <nav className="flex-grow">
               {navItems.map((item) => (
                 <NavLink key={item.name} to={item.path} onClick={() => setSidebarOpen(false)} className={({ isActive }) => `flex items-center p-3 my-2 rounded-lg transition-colors ${isActive ? 'bg-teal-500 text-white' : 'text-gray-600 hover:bg-gray-200'}`}>
-                    <IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}>
-                        {/* --- THE UGLY BUT BULLETPROOF FIX --- */}
-                        {item.iconName === 'grid' && <FiGrid />}
-                        {item.iconName === 'file-text' && <FiFileText />}
-                        {item.iconName === 'search' && <FiSearch />}
-                        {item.iconName === 'shield' && <FiShield />}
-                    </IconContext.Provider>
+                    <div className="h-5 w-5 mr-3">
+                        {item.iconName === 'grid' && React.createElement(FiGrid as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}
+                        {item.iconName === 'file-text' && React.createElement(FiFileText as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}
+                        {item.iconName === 'search' && React.createElement(FiSearch as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}
+                        {item.iconName === 'shield' && React.createElement(FiShield as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}
+                    </div>
                     {item.name}
                 </NavLink>
               ))}
@@ -81,30 +86,34 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         <nav className="flex-grow p-4">
             {navItems.map((item) => (
               <NavLink key={item.name} to={item.path} className={({ isActive }) => `flex items-center p-3 my-2 rounded-lg transition-colors ${isActive ? 'bg-teal-500 text-white' : 'text-gray-600 hover:bg-gray-200'}`}>
-                  <IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}>
-                      {/* --- APPLYING THE SAME FIX HERE --- */}
-                      {item.iconName === 'grid' && <FiGrid />}
-                      {item.iconName === 'file-text' && <FiFileText />}
-                      {item.iconName === 'search' && <FiSearch />}
-                      {item.iconName === 'shield' && <FiShield />}
-                  </IconContext.Provider>
+                  <div className="h-5 w-5 mr-3">
+                      {item.iconName === 'grid' && React.createElement(FiGrid as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}
+                      {item.iconName === 'file-text' && React.createElement(FiFileText as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}
+                      {item.iconName === 'search' && React.createElement(FiSearch as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}
+                      {item.iconName === 'shield' && React.createElement(FiShield as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}
+                  </div>
                   {item.name}
               </NavLink>
             ))}
         </nav>
-        <div className="p-4 border-t"><button onClick={handleLogout} className="w-full flex items-center p-3 text-red-500 hover:bg-red-100 rounded-lg transition-colors"><IconContext.Provider value={{ className: "h-5 w-5 mr-3" }}><FiLogOut /></IconContext.Provider>Logout</button></div>
+    <div className="p-4 border-t"><button onClick={handleLogout} className="w-full flex items-center p-3 text-red-500 hover:bg-red-100 rounded-lg transition-colors">
+      <div className="h-5 w-5 mr-3">{React.createElement(FiLogOut as IconType as React.ComponentType<IconBaseProps>, { size: 20 })}</div>
+      Logout
+    </button></div>
       </aside>
       
       {/* --- Main Content Area (This part is correct and unchanged) --- */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white shadow-sm flex items-center justify-between p-4 z-20">
-          <div className="lg:hidden"><button onClick={() => setSidebarOpen(true)} className="text-gray-700"><FiMenu size={24} /></button></div>
+          <div className="lg:hidden"><button onClick={() => setSidebarOpen(true)} className="text-gray-700">{React.createElement(FiMenu as IconType as React.ComponentType<IconBaseProps>, { size: 24 })}</button></div>
           <div className="hidden lg:block w-8"></div>
           <div className="flex items-center space-x-4">
             <div className="relative" ref={notificationRef}>
                 <button onClick={handleBellClick} className="relative text-gray-600 hover:text-teal-600">
                     {unreadCount > 0 && (<span className="absolute -top-1 -right-1 h-3 w-3 flex items-center justify-center text-[9px] text-white bg-red-500 rounded-full border-2 border-white"></span>)}
-                    <IconContext.Provider value={{ className: "h-6 w-6" }}><FiBell /></IconContext.Provider>
+                    <div className="h-6 w-6">
+                        {React.createElement(FiBell as IconType as React.ComponentType<IconBaseProps>, { size: 24 })}
+                    </div>
                 </button>
                 {isNotificationOpen && (
                     <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white rounded-lg shadow-xl border overflow-hidden animate-fade-in-down">
